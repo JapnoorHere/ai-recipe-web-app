@@ -1,0 +1,52 @@
+{
+    "recipeName": "Dal Tadka",
+    "ingredients": [
+      { "name": "Toor dal", "quantity": "1 cup" },
+      { "name": "Water", "quantity": "3 cups" },
+      { "name": "Turmeric powder", "quantity": "1/2 tsp" },
+      { "name": "Salt", "quantity": "1 tsp" },
+      { "name": "Ghee", "quantity": "2 tbsp" },
+      { "name": "Cumin seeds", "quantity": "1 tsp" },
+      { "name": "Mustard seeds", "quantity": "1/2 tsp" },
+      { "name": "Dry red chili", "quantity": "2" },
+      { "name": "Asafoetida", "quantity": "a pinch" },
+      { "name": "Garlic", "quantity": "2 cloves, chopped" },
+      { "name": "Onion", "quantity": "1, chopped" },
+      { "name": "Tomato", "quantity": "1, chopped" },
+      { "name": "Cilantro", "quantity": "2 tbsp, chopped" }
+    ],
+    "steps": [
+      {
+        "stepNumber": 1,
+        "instruction": "Wash toor dal and pressure cook with water, turmeric powder, and salt for 3 whistles.",
+        "timeRequired": "20"
+      },
+      {
+        "stepNumber": 2,
+        "instruction": "Heat ghee in a pan, add cumin seeds, mustard seeds, dry red chili, and asafoetida. Saute for a minute.",
+        "timeRequired": "2"
+      },
+      {
+        "stepNumber": 3,
+        "instruction": "Add garlic and onion, saute until golden brown.",
+        "timeRequired": "5"
+      },
+      {
+        "stepNumber": 4,
+        "instruction": "Add tomato and cook until soft.",
+        "timeRequired": "3"
+      },
+      {
+        "stepNumber": 5,
+        "instruction": "Pour the cooked dal into the pan, mix well and simmer for 5 minutes.",
+        "timeRequired": "5"
+      },
+      {
+        "stepNumber": 6,
+        "instruction": "Garnish with cilantro.",
+        "timeRequired": "null"
+      }
+    ],
+    "totalTime": "35"
+  }
+  
