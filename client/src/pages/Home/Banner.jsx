@@ -16,6 +16,8 @@ import BannerImage from "@/assets/home-banner.jpg";
 import { ToastContainer } from "react-toastify";
 import Loader from "@/components/Loader";
 
+import {fetchGenerateRecipe} from "@/hooks/fetchGenerateRecipe";
+
 const Banner = () => {
     const [recipeData, setRecipeData] = useState({
         recipeName: "",
@@ -69,43 +71,47 @@ const Banner = () => {
         console.log(JSON.stringify(recipeDataFinal));
         setOpenDialog(false);
 
+        fetchGenerateRecipe(recipeDataFinal, dispatch, setRecipe, navigate, hideLoader, setRecipeData, setServingsCount, setDiet, showToast);
 
-        fetch("http://localhost:3000/api/recipe/generate/", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(recipeDataFinal),
-        })
-            .then(async (res) => {
-                if (res.ok) {
-                    return res.json();
-                } else if (res.status === 400) {
-                    const errorMessage = await res.json();
-                    console.log(errorMessage);
-                    throw new Error(errorMessage.reason);
-                }
-            })
-            .then((data) => {
-                dispatch(hideLoader());
-                console.log(data);
-                dispatch(setRecipe(data)); // Update recipe data
-                navigate("/recipe");
-            })
-            .catch((error) => {
-                console.log("Error part");
-                dispatch(hideLoader());
-                showToast(error.message, "error");
-                dispatch(setRecipe(null)); // Reset recipe data in Redux
-            });
-        setRecipeData({
-            recipeName: "",
-            cuisine: "",
-            healthGoals: "",
-            restrictions: "",
-        });
-        setServingsCount(1);
-        setDiet("veg");
+        // fetch(`${import.meta.env.VITE_API_KEY}/api/recipe/generate/`, {
+        //     method: "POST",
+        //     headers: {
+        //         "Content-Type": "application/json",
+        //     },
+        //     body: JSON.stringify(recipeDataFinal),
+        // })
+        //     .then(async (res) => {
+        //         if (res.ok) {
+        //             return res.json();
+        //         } else if (res.status === 400) {
+        //             const errorMessage = await res.json();
+        //             console.log(errorMessage);
+        //             throw new Error(errorMessage.reason);
+        //         }
+        //     })
+        //     .then((data) => {
+        //         dispatch(hideLoader());
+        //         console.log(data);
+        //         dispatch(setRecipe(data)); // Update recipe data
+        //         navigate("/recipe");
+        //     })
+        //     .catch((error) => {
+        //         console.log("Error part");
+        //         dispatch(hideLoader());
+        //         showToast(error.message, "error");
+        //         dispatch(setRecipe(null)); // Reset recipe data in Redux
+        //     });
+        // setRecipeData({
+        //     recipeName: "",
+        //     cuisine: "",
+        //     healthGoals: "",
+        //     restrictions: "",
+        // });
+        // setServingsCount(1);
+        // setDiet("veg");
+
+
+
     };
 
     return (
