@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router";
+
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
@@ -6,7 +8,8 @@ import { Label } from "@/components/ui/label";
 import { useToast } from './hooks/useToast'
 
 import { useDispatch, useSelector } from 'react-redux';
-import {showLoader, hideLoader} from "./utils/loaderSlice";
+import { showLoader, hideLoader } from "./utils/loaderSlice";
+import {setRecipe} from "./utils/recipeSlice";
 
 import BannerImage from "./assets/home-banner.jpg";
 import { ToastContainer } from "react-toastify";
@@ -35,6 +38,8 @@ const Banner = () => {
 
     const dispatch = useDispatch();
     const isLoading = useSelector(state => state.loader.loading);
+
+    const navigate = useNavigate();
 
 
     const handleChange = (e) => {
@@ -79,12 +84,12 @@ const Banner = () => {
             },
             body: JSON.stringify(recipeDataFinal),
         })
-            .then(async (res)=>{
-                if(res.ok){
+            .then(async (res) => {
+                if (res.ok) {
                     return res.json();
                 }
-                else if(res.status === 400){
-                    const errorMessage =await res.json();
+                else if (res.status === 400) {
+                    const errorMessage = await res.json();
                     console.log(errorMessage);
                     throw new Error(errorMessage.reason);
                 }
@@ -92,13 +97,14 @@ const Banner = () => {
             .then((data) => {
                 dispatch(hideLoader());
                 console.log(data);
+                dispatch(setRecipe(data));
+                navigate("/recipe");
             })
-            .catch((error)=>{
+            .catch((error) => {
                 console.log("Error part");
                 dispatch(hideLoader());
-                showToast(error.message,"error");
+                showToast(error.message, "error");
                 // console.log(error.message);
-                
             })
 
     }
@@ -107,7 +113,7 @@ const Banner = () => {
         <>
             {isLoading && <Loader />}
             <div className="relative h-[80vh] w-full bg-gradient-to-br from-amber-50 to-orange-100">
-                
+
                 <img
                     src={BannerImage}
                     alt="Banner"

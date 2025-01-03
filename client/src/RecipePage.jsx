@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useSelector } from 'react-redux';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -13,18 +14,24 @@ const IngredientsCard = ({ ingredients, onStart }) => {
         {ingredients.map((ingredient) => (
           <Card key={ingredient.name} className="flex flex-col items-center p-4 bg-white shadow-lg rounded-lg">
             <img
-              src="" 
+              src={ingredient.image}
               alt={ingredient.name}
               className="w-full h-32 object-cover rounded-lg mb-4"
+              loading='lazy'
             />
             <div className="text-center">
               <h3 className="text-lg font-medium text-gray-800 mb-1">{ingredient.name}</h3>
-              <p className="text-sm text-gray-600">{ingredient.amount}</p>
+              <p className="text-sm text-gray-600">{ingredient.quantity}</p>
             </div>
           </Card>
         ))}
       </div>
-      <Button onClick={onStart} className="w-full mt-6 bg-gradient-to-r from-amber-500 to-orange-500 text-white py-2 rounded-lg hover:from-orange-500 hover:to-amber-500">Start Recipe</Button>
+      <Button
+        onClick={onStart}
+        className="w-full mt-6 bg-gradient-to-r from-amber-500 to-orange-500 text-white py-2 rounded-lg hover:from-orange-500 hover:to-amber-500"
+      >
+        Start Recipe
+      </Button>
     </div>
   );
 };
@@ -65,61 +72,17 @@ const RecipeStepCard = ({ step, stepNumber }) => {
 };
 
 const RecipePage = () => {
+  const recipe = useSelector((state) => state.recipe.recipe); // Fetching recipe data from Redux
   const [currentStep, setCurrentStep] = useState(-1);
   const [showIngredients, setShowIngredients] = useState(false);
   const [returnStep, setReturnStep] = useState(null);
-
-  const recipe = {
-    title: "Chocolate Chip Cookies",
-    ingredients: [
-      { name: "All-purpose flour", amount: "2 1/4 cups", icon: "🌾" },
-      { name: "Unsalted butter", amount: "1 cup", icon: "🧈" },
-      { name: "Brown sugar", amount: "3/4 cup", icon: "🍯" },
-      { name: "Granulated sugar", amount: "1/4 cup", icon: "🍬" },
-      { name: "Large eggs", amount: "2", icon: "🥚" },
-      { name: "Vanilla extract", amount: "2 tsp", icon: "🍶" },
-      { name: "Baking soda", amount: "1 tsp", icon: "🧪" },
-      { name: "Salt", amount: "1/2 tsp", icon: "🧂" },
-      { name: "Chocolate chips", amount: "2 cups", icon: "🍫" },
-    ],
-    steps: [
-      {
-        instruction: "Preheat oven to 375°F (190°C) and line baking sheets with parchment paper.",
-        image: "/placeholder.svg?height=300&width=400"
-      },
-      {
-        instruction: "In a large bowl, cream together the butter, brown sugar, and granulated sugar until smooth.",
-        image: "/placeholder.svg?height=300&width=400"
-      },
-      {
-        instruction: "Beat in the eggs one at a time, then stir in the vanilla.",
-        image: "/placeholder.svg?height=300&width=400"
-      },
-      {
-        instruction: "In a separate bowl, whisk together the flour, baking soda, and salt. Gradually mix into the wet ingredients.",
-        image: "/placeholder.svg?height=300&width=400"
-      },
-      {
-        instruction: "Fold in the chocolate chips.",
-        image: "/placeholder.svg?height=300&width=400"
-      },
-      {
-        instruction: "Drop by rounded tablespoons onto the prepared baking sheets.",
-        image: "/placeholder.svg?height=300&width=400"
-      },
-      {
-        instruction: "Bake for 9 to 11 minutes or until golden brown. Let cool on baking sheet for 5 minutes before transferring to a wire rack.",
-        image: "/placeholder.svg?height=300&width=400"
-      },
-    ]
-  };
 
   const nextStep = () => setCurrentStep((prev) => Math.min(prev + 1, recipe.steps.length - 1));
   const prevStep = () => setCurrentStep((prev) => Math.max(prev - 1, -1));
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-amber-50 to-orange-100 p-4 md:p-8">
-      <h1 className="text-3xl md:text-4xl font-bold text-center mb-8 text-amber-800">{recipe.title}</h1>
+      <h1 className="text-3xl md:text-4xl font-bold text-center mb-8 text-amber-800">{recipe.recipeName}</h1>
       <div className="max-w-4xl mx-auto">
         <Card className="overflow-hidden shadow-lg">
           {currentStep === -1 || showIngredients ? (
@@ -172,8 +135,20 @@ const RecipePage = () => {
           </>
         )}
         <div className="mt-4 flex justify-between md:hidden">
-          <Button onClick={prevStep} disabled={currentStep <= -1} className="bg-amber-500 text-white px-4 py-2 rounded-lg hover:from-orange-500 hover:to-amber-500">Previous</Button>
-          <Button onClick={nextStep} disabled={currentStep >= recipe.steps.length - 1} className="bg-amber-500 text-white px-4 py-2 rounded-lg hover:from-orange-500 hover:to-amber-500">Next</Button>
+          <Button
+            onClick={prevStep}
+            disabled={currentStep <= -1}
+            className="bg-amber-500 text-white px-4 py-2 rounded-lg hover:from-orange-500 hover:to-amber-500"
+          >
+            Previous
+          </Button>
+          <Button
+            onClick={nextStep}
+            disabled={currentStep >= recipe.steps.length - 1}
+            className="bg-amber-500 text-white px-4 py-2 rounded-lg hover:from-orange-500 hover:to-amber-500"
+          >
+            Next
+          </Button>
         </div>
       </div>
     </div>
@@ -181,4 +156,3 @@ const RecipePage = () => {
 };
 
 export default RecipePage;
-    
