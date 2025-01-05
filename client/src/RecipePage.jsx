@@ -1,10 +1,49 @@
-'use client';
-
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { ChevronLeft, ChevronRight, ArrowLeft } from 'lucide-react';
+import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
+import 'react-circular-progressbar/dist/styles.css';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+
+const CircularTimer = ({ timeRequired, isActive, onToggle }) => {
+  const [timeLeft, setTimeLeft] = useState(timeRequired);
+
+  useEffect(() => {
+    let timer;
+    if (isActive && timeLeft > 0) {
+      timer = setInterval(() => setTimeLeft((prev) => prev - 1), 1000);
+    }
+    return () => clearInterval(timer);
+  }, [isActive, timeLeft]);
+
+  useEffect(() => {
+    setTimeLeft(timeRequired); // Reset timer when timeRequired changes
+  }, [timeRequired]);
+
+  const minutes = Math.floor(timeLeft / 60);
+  const seconds = timeLeft % 60;
+
+  return (
+    <div
+      className="w-16 h-16 absolute top-4 right-4 cursor-pointer flex flex-col items-center"
+      onClick={onToggle}
+    >
+      <CircularProgressbar
+        value={(timeLeft / timeRequired) * 100}
+        text={`${minutes}:${seconds.toString().padStart(2, '0')}`}
+        styles={buildStyles({
+          textColor: 'orange',
+          pathColor: 'orange',
+          trailColor: '#f5f5f5',
+        })}
+      />
+      <div className="text-center text-xs mt-1 text-gray-600 whitespace-nowrap">
+        {isActive ? 'Pause' : 'Start'}
+      </div>
+    </div>
+  );
+};
 
 const IngredientImagesForStep = ({ ingredientNames, allIngredients, hideHeader }) => {
   const filteredIngredients = allIngredients.filter((ingredient) =>
@@ -39,19 +78,32 @@ const IngredientImagesForStep = ({ ingredientNames, allIngredients, hideHeader }
           </p>
         )}
       </div>
+      <p className="text-sm text-gray-500 mt-4 text-center">
+        Note: These ingredient images are AI-generated and may not accurately represent the actual ingredients. Use them for reference purposes only.
+      </p>
     </div>
   );
 };
 
-const RecipeStepCard = ({ step, allIngredients, onShowIngredients }) => {
+const RecipeStepCard = ({ step, allIngredients, onShowIngredients, onToggleTimer, isTimerActive }) => {
   const ingredientNames = step.ingredientsUsed.split(', ');
 
   return (
-    <div className="p-6 md:p-8 bg-white shadow-md rounded-lg flex flex-col justify-between min-h-[400px]">
+    <div className="relative p-6 md:p-8 bg-white shadow-md rounded-lg flex flex-col justify-between min-h-[400px]">
+      {step.timeRequired && (
+        <CircularTimer
+          timeRequired={parseInt(step.timeRequired, 10)}
+          isActive={isTimerActive}
+          onToggle={onToggleTimer}
+        />
+      )}
       <div>
         <h2 className="text-xl font-semibold text-amber-800 mb-4">Step {step.stepNumber}</h2>
         <p className="text-lg font-medium text-gray-800 leading-relaxed mb-6">{step.instruction}</p>
-        <IngredientImagesForStep ingredientNames={ingredientNames} allIngredients={allIngredients} />
+        <p className="text-sm text-gray-600 mb-4">
+          Time Required: {step.timeRequired ? `${Math.floor(step.timeRequired / 60)}:${(step.timeRequired % 60).toString().padStart(2, '0')} minutes` : 'No'}
+        </p>
+        <IngredientImagesForStep ingredientNames={ingredientNames} allIngredients={allIngredients} hideHeader={true} />
       </div>
       <Button
         onClick={onShowIngredients}
@@ -77,6 +129,13 @@ const FinalMessage = ({ onComeBack }) => (
     >
       <ArrowLeft className="h-6 w-6" />
     </Button>
+    <br></br>
+    <Button
+      className="mt-4 bg-gradient-to-r from-amber-500 to-orange-500 text-white py-2 px-4 rounded-lg shadow-md hover:from-orange-500 hover:to-amber-500"
+      onClick={() => window.location.href = '/'}
+    >
+      Go to Home Screen
+    </Button>
   </div>
 );
 
@@ -85,9 +144,17 @@ const RecipePage = () => {
   const [currentStep, setCurrentStep] = useState(-1);
   const [showIngredients, setShowIngredients] = useState(false);
   const [returnStep, setReturnStep] = useState(null);
+  const [isTimerActive, setIsTimerActive] = useState(false);
 
-  const nextStep = () => setCurrentStep((prev) => Math.min(prev + 1, recipe.steps.length));
-  const prevStep = () => setCurrentStep((prev) => Math.max(prev - 1, -1));
+  const nextStep = () => {
+    setCurrentStep((prev) => Math.min(prev + 1, recipe.steps.length));
+    setIsTimerActive(false); // Reset timer when moving to the next step
+  };
+
+  const prevStep = () => {
+    setCurrentStep((prev) => Math.max(prev - 1, -1));
+    setIsTimerActive(false); // Reset timer when moving to the previous step
+  };
 
   const handleShowIngredients = () => {
     setReturnStep(currentStep);
@@ -99,6 +166,10 @@ const RecipePage = () => {
     setShowIngredients(false);
     setCurrentStep(returnStep !== null ? returnStep : 0);
     setReturnStep(null);
+  };
+
+  const handleToggleTimer = () => {
+    setIsTimerActive((prev) => !prev);
   };
 
   return (
@@ -128,6 +199,8 @@ const RecipePage = () => {
               step={recipe.steps[currentStep]}
               allIngredients={recipe.ingredients}
               onShowIngredients={handleShowIngredients}
+              onToggleTimer={handleToggleTimer}
+              isTimerActive={isTimerActive}
             />
           ) : currentStep === recipe.steps.length ? (
             <FinalMessage onComeBack={() => setCurrentStep(recipe.steps.length - 1)} />

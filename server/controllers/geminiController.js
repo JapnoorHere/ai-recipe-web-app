@@ -26,7 +26,7 @@ JSON Structure:
     {
       "stepNumber": 1,
       "instruction": "Step instruction in simple English",
-      "timeRequired": "Time in minutes or null if no time is needed",
+      "timeRequired": "Time in seconds or null if no time is needed",
       "ingredientsUsed": "Comma-separated list of ingredient names used in this step (must exactly match the names given in the ingredients array, or 'null' if no ingredient is used)"
     }
   ],
@@ -135,29 +135,29 @@ Output:
     {
       "stepNumber": 1,
       "instruction": "Boil water with spices for 2 minutes.",
-      "timeRequired": "2",
+      "timeRequired": "120",
       "ingredientsUsed": "Water, Spices"
     },
     {
       "stepNumber": 2,
       "instruction": "Add tea leaves and boil for another minute.",
-      "timeRequired": "1",
+      "timeRequired": "60",
       "ingredientsUsed": "Tea Leaves"
     },
     {
       "stepNumber": 3,
       "instruction": "Pour in milk and sugar, and simmer for 3 minutes.",
-      "timeRequired": "3",
+      "timeRequired": "180",
       "ingredientsUsed": "Milk, Sugar"
     },
     {
       "stepNumber": 4,
       "instruction": "Strain the tea into cups and serve hot.",
-      "timeRequired": "1",
+      "timeRequired": "60",
       "ingredientsUsed": "null"
     }
   ],
-  "totalTime": "7"
+  "totalTime": "420"
 }`
 });
 
