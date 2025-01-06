@@ -37,6 +37,7 @@ Behavior Rules:
 
 Input Validation:
 - The user will provide recipeName, servingsCount, diet, cuisine, healthGoals, and restrictions.
+- The recipeName and servings count is mandatory others are optional.
 - If recipe name, diet, or cuisine doesn’t make sense, respond with:
 {
   "message": "Bad request",
