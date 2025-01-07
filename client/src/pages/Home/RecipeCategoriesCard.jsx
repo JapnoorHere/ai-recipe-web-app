@@ -34,7 +34,7 @@ const RecipeCategoriesCard = ({ name, cuisine, description, image, diet, handleC
         </div>
   
         {/* Decorative Border */}
-        <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-amber-400 via-orange-500 to-amber-400 opacity-30 pointer-events-none  transition-opacity"></div>
+        <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-amber-300 via-orange-400 to-amber-300 opacity-25 pointer-events-none  transition-opacity"></div>
       </div>
     );
   };

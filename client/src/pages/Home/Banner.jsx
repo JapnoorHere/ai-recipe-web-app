@@ -70,7 +70,6 @@ const Banner = () => {
         setOpenDialog(false);
 
 
-
         fetch("http://localhost:3000/api/recipe/generate/", {
             method: "POST",
             headers: {
