@@ -19,7 +19,7 @@ const recipes = [
     { cuisine: 'Italian', name: 'Lasagna', description: 'Layered pasta with meat and cheese', image: 'https://static01.nyt.com/images/2023/08/31/multimedia/RS-Lasagna-hkjl/RS-Lasagna-hkjl-threeByTwoMediumAt2X.jpg', diet: 'nonveg' },
     { cuisine: 'Italian', name: 'Bruschetta', description: 'Toasted bread with tomatoes and basil', image: 'https://images.themodernproper.com/billowy-turkey/production/posts/TomatoandAvocadoBruschetta_8.jpg?w=1200&h=1200&q=60&fm=jpg&fit=crop&dm=1690997775&s=4a0e918814cf59dcaf0d506f016bd650', diet: 'veg' },
     { cuisine: 'Italian', name: 'Risotto', description: 'Creamy rice dish with various flavors', image: 'https://pekis.net/sites/default/files/styles/wide/public/2024-10/creamy_risotto.webp?itok=9-A1Z0Up', diet: 'veg' },
-    { cuisine: 'Italian', name: 'Caprese Salad', description: 'Tomatoes, mozzarella, and basil', image: 'Caprese Salad', diet: 'veg' },
+    { cuisine: 'Italian', name: 'Caprese Salad', description: 'Tomatoes, mozzarella, and basil', image: 'https://cdn.apartmenttherapy.info/image/upload/f_jpg,q_auto:eco,c_fill,g_auto,w_1500,ar_1:1/k%2Farchive%2F3b432b41ce04c96a08d77befa42b9881a587a436', diet: 'veg' },
     { cuisine: 'Italian', name: 'Gelato', description: 'Creamy Italian ice cream', image: 'https://yourguardianchef.com/wp-content/uploads/2023/02/Italian-Gelato-Recipe-Vanilla-Chocolate-and-Pistachios-1.jpg', diet: 'veg' },
 
     // Mexican Recipes

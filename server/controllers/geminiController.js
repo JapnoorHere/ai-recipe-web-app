@@ -180,7 +180,7 @@ const generateImageURL = (prompt) => {
 
 const preloadImage = async (url) => {
     try {
-        await axios.get(url); // Preload image to ensure it exists
+        await axios.get(url);
         return url;
     } catch (error) {
         console.error(`Error preloading image at ${url}:`, error.message);
@@ -197,14 +197,13 @@ const replaceImagesWithURLs = async (data) => {
                 const imageUrl = generateImageURL(ingredient.image);
                 imageTasks.push(
                     preloadImage(imageUrl).then((preloadedUrl) => {
-                        ingredient.image = preloadedUrl; // Assign preloaded URL or null
+                        ingredient.image = preloadedUrl; 
                     })
                 );
             }
         });
     }
 
-    // Wait for all image generation tasks to complete
     await Promise.all(imageTasks);
     return data;
 };
