@@ -21,11 +21,13 @@ import { Checkbox } from "@/components/ui/checkbox";
 
 import { useToast } from "@/hooks/useToast";
 import { ToastContainer } from "react-toastify";
+import { useNavigate } from "react-router";
 
 const Signup = ({ open, onOpenChange }) => {
     const [activeTab, setActiveTab] = useState("signin");
     
     const { showToast } = useToast();
+    const navigate = useNavigate();
     
     const fullName = useRef();
     const email = useRef();
@@ -41,22 +43,43 @@ const Signup = ({ open, onOpenChange }) => {
             showToast("Please enter Email", "error")
         }
         else if(password.current.value.length < 6){
-            showToast("Password should be of at least 6 characters")
+            showToast("Password should be of at least 6 characters", "error")
         }
         else if(cPassword.current.value.length !== password.current.value.length){
-            showToast("Please enter same password in both the fields")
+            showToast("Please enter same password in both the fields", "error")
         }
         else{
-            fetch(`${import.meta.env.VITE_API_KEY}/api/auth/signup/`,, {
+            
+            fetch(`${import.meta.env.VITE_API_KEY}/api/auth/signup`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify(recipeDataFinal),
+                body: JSON.stringify({
+                    name: fullName.current.value,
+                    email: email.current.value,
+                    password: password.current.value
+                }),
             })
-            .then((req)=>req.json())
-            .then((data)=>{
-                
+            .then(async (res)=>{
+                if (res.ok) {
+                    return res.json();
+                }
+                else if (res.status === 400) {
+                    showToast("Email already exists","error")
+                }
+            })  
+            .then((data) =>{
+                if(data.message === "created"){
+                    showToast("User Created Successfully","success")
+                    localStorage.setItem("user", JSON.stringify(data.user));
+                    onOpenChange(false);
+                }
+            })
+            .catch((error)=>{
+                if(error.message){
+                    console.log(error.message);                
+                }
             })
         }
         
