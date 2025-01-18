@@ -22,7 +22,9 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/hooks/useToast";
 import { ToastContainer } from "react-toastify";
 import { useNavigate } from "react-router";
+import { useDispatch } from "react-redux";
 
+import {signInUser} from '../../utils/signInSlice';
 const Signup = ({ open, onOpenChange }) => {
     const [activeTab, setActiveTab] = useState("signin");
     
@@ -34,7 +36,7 @@ const Signup = ({ open, onOpenChange }) => {
     const password = useRef();
     const cPassword = useRef();
 
-
+    const dispatch = useDispatch();
     const handleSignUp = () => {
         if(fullName.current.value.length < 1){
             showToast("Please enter Full Name", "error")
@@ -45,7 +47,7 @@ const Signup = ({ open, onOpenChange }) => {
         else if(password.current.value.length < 6){
             showToast("Password should be of at least 6 characters", "error")
         }
-        else if(cPassword.current.value.length !== password.current.value.length){
+        else if(cPassword.current.value !== password.current.value  ){
             showToast("Please enter same password in both the fields", "error")
         }
         else{
@@ -71,14 +73,15 @@ const Signup = ({ open, onOpenChange }) => {
             })  
             .then((data) =>{
                 if(data.message === "created"){
-                    showToast("User Created Successfully","success")
+                    showToast("Welcome " + data.user.name,"success")
                     localStorage.setItem("user", JSON.stringify(data.user));
+                    dispatch(signInUser(data.user));
                     onOpenChange(false);
                 }
             })
             .catch((error)=>{
-                if(error.message){
-                    console.log(error.message);                
+                if(error){
+                    console.log(error);                
                 }
             })
         }

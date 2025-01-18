@@ -8,7 +8,7 @@ const store = configureStore({
     reducer:{
         loader: loaderReducer,
         recipe: recipeReducer,
-        signIn: signInReducer
+        signedIn: signInReducer
     }
 
 })

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router';
 import { Menu, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -6,20 +6,12 @@ import Logo from '../assets/logo.png';
 import Signup from '@/pages/Auth/Signup';
 import { useDispatch, useSelector } from 'react-redux';
 import {signOutUser, signInUser} from '../utils/signInSlice'
-
-const navItems = [
-    { name: 'Home', href: '/' },
-    { name: 'About', href: '/about' },
-    { name: 'Services', href: '/services' },
-    { name: 'Contact', href: '/contact' },
-];
-
 const Navbar = () => {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [dialogOpen, setDialogOpen] = useState(false);
 
     const dispatch = useDispatch();
-    const signedInUser = useSelector(store => store.signedIn.user)
+    const signedInUser = useSelector((state)=>state.signedIn.user);
 
     
     useEffect(()=>{
@@ -27,7 +19,7 @@ const Navbar = () => {
         if(user){
             dispatch(signInUser(user));
         }
-    },[])
+    },[dispatch]);
 
     const handleSignOutUser = ()=>{
         dispatch((signOutUser()));
@@ -38,10 +30,11 @@ const Navbar = () => {
         <header className="sticky top-0 z-50 bg-gradient-to-r from-orange-400 to-orange-400 shadow-md">
             <nav className="mx-auto flex max-w-7xl items-center justify-between p-4 lg:px-8" aria-label="Global">
                 <div className="flex lg:flex-1">
-                    <Link href="/" className="-m-1.5 p-1.5">
-                        <img className="h-12" src={Logo} alt="Logo" />
+                    <Link href="/" className="-m-2 p-1.2">
+                        <img className="h-16" src={Logo} alt="Logo" />
                     </Link>
                 </div>
+                <h1 className='text-white text-2xl font-bold'>FlavorForge AI</h1>
                 <div className="flex lg:hidden">
                     <button
                         type="button"
