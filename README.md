@@ -1,5 +1,21 @@
 ﻿# ai-recipe-web-app
 
+Tech Stack Used : 
+
+Frontend:
+<ul>
+<li>React</li>
+<li>Tailwind CSS</li>
+<li>Shad cn UI</li>
+</ul>
+
+Backend:
+<ul>
+<li>Node JS</li>
+<li>Pollnations AI API</li>
+<li>Mongodb</li>
+</ul>
+
 ![image](https://github.com/user-attachments/assets/d21454e5-5325-467c-a685-daa4bf09f850)
 
 ![image](https://github.com/user-attachments/assets/aee89eed-128c-4be6-9ff3-daeb79803d29)
